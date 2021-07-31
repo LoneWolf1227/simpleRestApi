@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Services\ValidatorService;
-use JetBrains\PhpStorm\ArrayShape;
 use MongoDB\BSON\ObjectId;
 use MongoDB\Driver\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
@@ -19,7 +18,6 @@ class Users
         $this->collection = $container->get('connection')->selectCollection('users');
     }
 
-    #[ArrayShape(['message' => "string", 'status' => "string"])]
     public function add($params): array
     {
         if (!empty($params['firstName']) && $this->validator->alpha($params['firstName']) &&
@@ -30,10 +28,11 @@ class Users
                 'firstName' => $params['firstName'],
                 'lastName' => $params['lastName'],
                 'phone' => (int)$params['phone'],
-                'roles' => 0
+                'role' => 0
             ];
-            $this->collection->insertOne($user);
-            return ['message' => 'User created', 'status' => 'Ok'];
+            $result = $this->collection->insertOne($user);
+
+            return ['_id' => $result->getInsertedId(),'message' => 'User created', 'status' => 'Ok'];
         }
         return ['message' => 'Invalid data sent', 'status' => 'Error'];
     }
@@ -64,6 +63,8 @@ class Users
         if (empty($findOne)) {
             return ['message' => 'User not founded', 'status' => 'Ok'];
         }
+
+        $findOne['role'] = self::ROLES[$findOne['role']];
 
         return $findOne;
     }

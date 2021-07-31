@@ -11,12 +11,6 @@ class ViewUsersController extends Controller
     public function __construct(private Users $users)
     { }
 
-    public function users(Response $response): Response
-    {
-        $userList = $this->users->list();
-        return $this->responseJsonData($userList, $response);
-    }
-
     public function getUserById(Response $response, $id): Response
     {
         $user = $this->users->getByArg('_id', $id);
