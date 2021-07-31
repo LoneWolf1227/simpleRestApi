@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "b103fd7c-d060-42a2-81c7-2d2587290f67",
+		"name": "Simple slim rest api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "addUser",
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"followRedirects": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "firstName",
+							"value": "Dilnoraev",
+							"type": "text"
+						},
+						{
+							"key": "lastName",
+							"value": "Alex",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "3766597558",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/users/add",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"users",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUser By id",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"strictSSL": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/users/id/610569d9be366426072cc861",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"users",
+						"id",
+						"610569d9be366426072cc861"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUser By phone",
+			"protocolProfileBehavior": {
+				"followRedirects": false,
+				"strictSSL": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/users/phone/65489",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"users",
+						"phone",
+						"65489"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
