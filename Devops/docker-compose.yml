@@ -1,0 +1,54 @@
+version: '3.5'
+
+networks:
+  RestFullApi:
+
+services:
+  nginx-service:
+    image: nginx:latest
+    container_name: nginx-container
+    ports:
+      - "8080:80"
+    volumes:
+      - ../Api:/var/www/RestFullApi/Api
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php8-service
+      - mongo-service
+    networks:
+      - RestFullApi
+
+  php8-service:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+      args:
+        - USER_ID
+        - GROUP_ID
+    container_name: php8-container
+    ports:
+      - "9000:9000"
+    volumes:
+      - ../Api:/var/www/RestFullApi/Api
+      - ../Api/logs:/var/www/RestFullApi/Api/logs
+    environment:
+      LOGS_DIR_DOCKER: "/var/www/RestFullApi/Api/logs"
+      host :  "mongo-container"
+      dbname: "api"
+      dbuser: "admin"
+      dbpass: "admin"
+    networks:
+      - RestFullApi
+
+  mongo-service:
+      container_name: mongo-container
+      image: mongo
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: admin
+        MONGO_INITDB_ROOT_PASSWORD: admin
+      ports:
+        - "27017:27017"
+      logging:
+        driver: none
+      networks:
+        - RestFullApi
